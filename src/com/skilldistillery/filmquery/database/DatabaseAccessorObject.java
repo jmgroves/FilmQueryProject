@@ -16,7 +16,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film getFilmById(int filmId) throws SQLException {
-		if(filmId <= 0) {
+		if (filmId <= 0) {
 			return null;
 		}
 
@@ -24,7 +24,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String pass = "student";
 		Connection conn = DriverManager.getConnection(url, user, pass);
 		String sqltext;
-		sqltext = "SELECT * FROM film WHERE id = ?";
+		sqltext = "Select * from film f JOIN language l ON l.id = f.language_id JOIN film_category fc ON f.id = fc.film_id JOIN category c ON c.id = fc.category_id WHERE f.id = ?";  
+		
 		PreparedStatement stmt = conn.prepareStatement(sqltext);
 		stmt.setInt(1, filmId);
 
@@ -42,10 +43,15 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			double repCost = rs.getDouble(9);
 			String rating = rs.getString(10);
 			String features = rs.getString(11);
-			
-			film = new Film(filmId2, title, desc, releaseYear, langId, rentDur, rate, length, repCost, rating,
-					features, getActorsByFilmId(filmId));
+			String language = rs.getString(13);
+			String category = rs.getString(17);
+
+			film = new Film(filmId2, title, category, desc, releaseYear, language, langId, rentDur, rate, length, repCost, rating, features,
+					getActorsByFilmId(filmId));
 		}
+	    rs.close();
+	    stmt.close();
+	    conn.close();
 		return film;
 	}
 
@@ -69,6 +75,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			actor = new Actor(id, firstName, lastName);
 		}
+	    rs.close();
+	    stmt.close();
+	    conn.close();
 		return actor;
 	}
 
@@ -83,10 +92,34 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, filmId);
 		ResultSet rs = stmt.executeQuery();
 		List<Actor> list = new ArrayList<Actor>();
-		while(rs.next()) {
+		while (rs.next()) {
 			list.add(getActorById(rs.getInt(1)));
 		}
+	    rs.close();
+	    stmt.close();
+	    conn.close();
 		return list;
+	}
+
+	@Override
+	public List<Film> getFilmsBySearchWord(String search) throws SQLException {
+		String user = "student";
+		String pass = "student";
+		Connection conn = DriverManager.getConnection(url, user, pass);
+		String sqltext;
+		sqltext = "SELECT id FROM film WHERE title LIKE ? OR description LIKE ?";
+		PreparedStatement stmt = conn.prepareStatement(sqltext);
+		stmt.setString(1, "%" + search + "%");
+		stmt.setString(2, "%" + search + "%");	
+		ResultSet rs = stmt.executeQuery();
+		List<Film> filmList = new ArrayList<Film>();
+		while(rs.next()) {
+			filmList.add(getFilmById(rs.getInt(1)));
+		}
+	    rs.close();
+	    stmt.close();
+	    conn.close();
+		return filmList;
 	}
 
 }

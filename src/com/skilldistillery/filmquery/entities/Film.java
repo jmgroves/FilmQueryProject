@@ -8,23 +8,27 @@ public class Film {
 	private String description;
 	private int releaseYear;
 	private int languageId;
+	private String language;
 	private int rentalDuration;
 	private double rentalRates;
 	private int length;
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private String category;
 	private List<Actor> actorList;
 	public Film() {		
 	}
 	
-	public Film(int id, String title, String description, int releaseYear, int languageId, int rentalDuration,
+	public Film(int id, String title, String category, String description, int releaseYear, String language, int languageId, int rentalDuration,
 			double rentalRates, int length, double replacementCost, String rating, String specialFeatures, List<Actor> actorList) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.description = description;
+		this.category = category;
 		this.releaseYear = releaseYear;
+		this.language = language;
 		this.languageId = languageId;
 		this.rentalDuration = rentalDuration;
 		this.rentalRates = rentalRates;
@@ -169,13 +173,6 @@ public class Film {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Film id= " + id + ", Title = " + title + ", Description =" + description + ", Release Year = " + releaseYear
-				+ ", Language Id = " + languageId + ", Rental Duration = " + rentalDuration + ", Rental Rates = " + rentalRates
-				+ ", Length = " + length + ", Replacement Cost = " + replacementCost + ", Rating = " + rating
-				+ ", Special Features = " + specialFeatures;
-	}
 
 	public List<Actor> getActorList() {
 		return actorList;
@@ -183,5 +180,84 @@ public class Film {
 
 	public void setActorList(List<Actor> actorList) {
 		this.actorList = actorList;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("\nTitle: ");
+		builder.append(title);
+		builder.append("\nCategory: ");
+		builder.append(category);
+		builder.append("\nRelease Year: ");
+		builder.append(releaseYear);
+		builder.append("\nDescription: ");
+		builder.append(description);
+		builder.append("\nLanguage: ");
+		builder.append(language);
+		builder.append("\nRating: ");
+		builder.append(rating);
+		builder.append("\nActor List: ");
+		for (Actor actor : actorList) {
+			builder.append(actor);
+			builder.append(", ");
+		}
+		builder.append("\n\n");
+		return builder.toString();
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String printFullDescription() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("\nFilm id: ");
+		builder.append(id);
+		builder.append("\nTitle: ");
+		builder.append(title);
+		builder.append("\nRelease Year: ");
+		builder.append(releaseYear);
+		builder.append("\nCategory: ");
+		builder.append(category);
+		builder.append("\nDescription: ");
+		builder.append(description);
+		builder.append("\nLanguage id: ");
+		builder.append(languageId);
+		builder.append("\nLanguage: ");
+		builder.append(language);
+		builder.append("\nRental Duration: ");
+		builder.append(rentalDuration);
+		builder.append("\nRental Rate: ");
+		builder.append(rentalRates);
+		builder.append("\nLength: ");
+		builder.append(length);
+		builder.append("\nReplacement Cost: ");
+		builder.append(replacementCost);
+		builder.append("\nRating: ");
+		builder.append(rating);
+		builder.append("\nSpecial Features: ");
+		builder.append(specialFeatures);
+		builder.append("\nActor List: ");
+		for (Actor actor : actorList) {
+			builder.append(actor);
+			builder.append(", ");
+		}
+		builder.append("\n\n");
+		return builder.toString();
+
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }
