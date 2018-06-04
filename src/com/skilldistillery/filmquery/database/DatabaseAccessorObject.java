@@ -24,8 +24,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		String pass = "student";
 		Connection conn = DriverManager.getConnection(url, user, pass);
 		String sqltext;
-		sqltext = "Select * from film f JOIN language l ON l.id = f.language_id JOIN film_category fc ON f.id = fc.film_id JOIN category c ON c.id = fc.category_id WHERE f.id = ?";  
-		
+		sqltext = "Select * from film f JOIN language l ON l.id = f.language_id JOIN film_category fc ON f.id = fc.film_id JOIN category c ON c.id = fc.category_id WHERE f.id = ?";
+
 		PreparedStatement stmt = conn.prepareStatement(sqltext);
 		stmt.setInt(1, filmId);
 
@@ -46,12 +46,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			String language = rs.getString(13);
 			String category = rs.getString(17);
 
-			film = new Film(filmId2, title, category, desc, releaseYear, language, langId, rentDur, rate, length, repCost, rating, features,
-					getActorsByFilmId(filmId));
+			film = new Film(filmId2, title, category, desc, releaseYear, language, langId, rentDur, rate, length,
+					repCost, rating, features, getActorsByFilmId(filmId));
 		}
-	    rs.close();
-	    stmt.close();
-	    conn.close();
+		rs.close();
+		stmt.close();
+		conn.close();
 		return film;
 	}
 
@@ -75,9 +75,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 			actor = new Actor(id, firstName, lastName);
 		}
-	    rs.close();
-	    stmt.close();
-	    conn.close();
+		rs.close();
+		stmt.close();
+		conn.close();
 		return actor;
 	}
 
@@ -95,9 +95,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		while (rs.next()) {
 			list.add(getActorById(rs.getInt(1)));
 		}
-	    rs.close();
-	    stmt.close();
-	    conn.close();
+		rs.close();
+		stmt.close();
+		conn.close();
 		return list;
 	}
 
@@ -110,17 +110,18 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		sqltext = "SELECT id FROM film WHERE title LIKE ? OR description LIKE ?";
 		PreparedStatement stmt = conn.prepareStatement(sqltext);
 		stmt.setString(1, "%" + search + "%");
-		stmt.setString(2, "%" + search + "%");	
+		stmt.setString(2, "%" + search + "%");
 		ResultSet rs = stmt.executeQuery();
 		List<Film> filmList = new ArrayList<Film>();
-		while(rs.next()) {
+		while (rs.next()) {
 			filmList.add(getFilmById(rs.getInt(1)));
 		}
-	    rs.close();
-	    stmt.close();
-	    conn.close();
+		rs.close();
+		stmt.close();
+		conn.close();
 		return filmList;
 	}
+
 	@Override
 	public void rentalCopies(int filmId) throws SQLException {
 		String user = "student";
@@ -132,10 +133,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		stmt.setInt(1, filmId);
 		ResultSet rs = stmt.executeQuery();
 		System.out.println("RENTAL DETAILS\n");
-		while(rs.next()) {
-			System.out.print("Rental ID: " + rs.getInt(1) + "\t" + "Rental Condition: " + rs.getString(2)+ "\n");
+		while (rs.next()) {
+			System.out.print("Rental ID: " + rs.getInt(1) + "\t" + "Rental Condition: " + rs.getString(2) + "\n");
 		}
-		
+		rs.close();
+		stmt.close();
+		conn.close();
+
 	}
 
 }
