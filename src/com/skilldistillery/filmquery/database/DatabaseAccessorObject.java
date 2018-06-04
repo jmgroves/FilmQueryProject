@@ -121,5 +121,21 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	    conn.close();
 		return filmList;
 	}
+	@Override
+	public void rentalCopies(int filmId) throws SQLException {
+		String user = "student";
+		String pass = "student";
+		Connection conn = DriverManager.getConnection(url, user, pass);
+		String sqltext;
+		sqltext = "SELECT i.id, i.media_condition FROM Inventory_item i where i.film_id = ?";
+		PreparedStatement stmt = conn.prepareStatement(sqltext);
+		stmt.setInt(1, filmId);
+		ResultSet rs = stmt.executeQuery();
+		System.out.println("RENTAL DETAILS\n");
+		while(rs.next()) {
+			System.out.print("Rental ID: " + rs.getInt(1) + "\t" + "Rental Condition: " + rs.getString(2)+ "\n");
+		}
+		
+	}
 
 }

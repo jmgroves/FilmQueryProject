@@ -13,4 +13,6 @@ public interface DatabaseAccessor {
 	public List<Actor> getActorsByFilmId(int filmId) throws SQLException;
 
 	public List<Film> getFilmsBySearchWord(String search) throws SQLException;
+	
+	public void rentalCopies (int id) throws SQLException;
 }

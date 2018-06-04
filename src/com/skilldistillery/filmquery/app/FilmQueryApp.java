@@ -57,6 +57,8 @@ public class FilmQueryApp {
 				String userDetail = input.nextLine();
 				if (userDetail.equalsIgnoreCase("y")) {
 					System.out.println(film.printFullDescription());
+					System.out.println();
+					db.rentalCopies(id);
 				} else {
 					System.out.println(film);
 				}
